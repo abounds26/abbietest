@@ -1,0 +1,291 @@
+{
+	"info": {
+		"_postman_id": "30e6288a-db52-457a-bfec-218487ce8932",
+		"name": "Test Project Collection",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "37411549"
+	},
+	"item": [
+		{
+			"name": "Authentication",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.environment.get(\"variable_key\");",
+							"pm.globals.get(\"variable_key\");",
+							"pm.variables.get(\"variable_key\");",
+							"pm.environment.set(\"variable_key\", \"variable_value\");",
+							"pm.sendRequest(\"https://postman-echo.com/get\", function (err, response) {",
+							"    console.log(response.json());",
+							"});",
+							"pm.test(\"Your test name\", function () {",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData.value).to.eql(100);",
+							"});",
+							"pm.test(\"Content-Type is present\", function () {",
+							"    pm.response.to.have.header(\"Content-Type\");",
+							"});",
+							"pm.test(\"Successful POST request\", function () {",
+							"    pm.expect(pm.response.code).to.be.oneOf([201, 202]);",
+							"});",
+							"var jsonObject = xml2Json(responseBody);",
+							"var schema = {",
+							"    \"items\": {",
+							"        \"type\": \"boolean\"",
+							"    }",
+							"};",
+							"",
+							"var data1 = [true, false];",
+							"var data2 = [true, 123];",
+							"",
+							"pm.test('Schema is valid', function () {",
+							"    pm.expect(tv4.validate(data1, schema)).to.be.true;",
+							"    pm.expect(tv4.validate(data2, schema)).to.be.true;",
+							"});",
+							"pm.collectionVariables.set(\"variable_key\", \"variable_value\");",
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"pm.test(\"Body matches string\", function () {",
+							"    pm.expect(pm.response.text()).to.include(\"string_you_want_to_search\");",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"email\": \"abbie.hendley@lamark12.org\",\n    \"password\": \"5189961Dani!\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://api.voxo.co/v2/authentication",
+					"protocol": "https",
+					"host": [
+						"api",
+						"voxo",
+						"co"
+					],
+					"path": [
+						"v2",
+						"authentication"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Company Contacts",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Your test name\", function () {",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData.value).to.eql(100);",
+							"});",
+							"try {",
+							"    const response = await pm.sendRequest({",
+							"        url: \"https://postman-echo.com/get\",",
+							"        method: \"GET\"",
+							"    });",
+							"",
+							"    console.log(response.json());",
+							"} catch (err) {",
+							"    console.error(err);",
+							"}"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE3MjI4MDEyMjI1MjIsInN1YiI6IjQxMjI5IiwiZW1haWwiOiJhYmJpZS5oZW5kbGV5QGxhbWFyazEyLm9yZyIsImV4cCI6MTcyMjgwMTI2NTcyMiwiYXVkIjoiaHR0cHM6Ly95b3VyZG9tYWluLmNvbSIsImlzcyI6IlZveG8gUG9ydGFsIiwianRpIjoiZWU0YjVjYzQtNjA1Mi00NWE2LWFhNGEtOWRkZTQ4ZTJhOTBkIn0.u_LPmSUZnJgEsx4yP8Y0uXI_iAMtCE9LIyfrrBm18TU",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://api.voxo.co/v2/directory/company",
+					"protocol": "https",
+					"host": [
+						"api",
+						"voxo",
+						"co"
+					],
+					"path": [
+						"v2",
+						"directory",
+						"company"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Personal Contacts",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "your token from auth",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://api.voxo.co/v2/directory/personal",
+					"protocol": "https",
+					"host": [
+						"api",
+						"voxo",
+						"co"
+					],
+					"path": [
+						"v2",
+						"directory",
+						"personal"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Department Users",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "your token",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://api.voxo.co/v2/branches/users",
+					"protocol": "https",
+					"host": [
+						"api",
+						"voxo",
+						"co"
+					],
+					"path": [
+						"v2",
+						"branches",
+						"users"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create a Personal Contact",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE3MjI0NTkwNjM2MzUsInN1YiI6IjY4NyIsImVtYWlsIjoiamFtZXNAdm94by5jbyIsImV4cCI6MTcyMjQ1OTEwNjgzNSwiYXVkIjoiaHR0cHM6Ly95b3VyZG9tYWluLmNvbSIsImlzcyI6IlZveG8gUG9ydGFsIiwianRpIjoiMWU1MDcxZjAtMjY4YS00MWQwLWIxNWMtYWQ1YTdjOWFkYmUyIn0.8El9DbrBwbXHnycWw8ZvHitGE_bxzUBpAdfSR0OstFs",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"firstName\": \"Billy\",\n    \"lastName\": \"Madison\",\n    \"number\": \"6015515555\",\n    \"email\": \"test@test.com\",\n    \"company\": \"Limp Bizkit\",\n    \"favorite\": 0\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://api.voxo.co/v2/directory",
+					"protocol": "https",
+					"host": [
+						"api",
+						"voxo",
+						"co"
+					],
+					"path": [
+						"v2",
+						"directory"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete Personal Contact",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "your token",
+							"type": "string"
+						}
+					]
+				},
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "https://api.voxo.co/v2/directory/contactIdToDelete",
+					"protocol": "https",
+					"host": [
+						"api",
+						"voxo",
+						"co"
+					],
+					"path": [
+						"v2",
+						"directory",
+						"contactIdToDelete"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
