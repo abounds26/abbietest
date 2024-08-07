@@ -3,54 +3,34 @@
 //3. handle the errors and error state
 
 
-import React from 'react'
-import { Text, View, StyleSheet } from 'react-native'
-import {useEffect, useState} from 'react'; 
+import React from 'react';
+import { View, Text } from 'react-native';
+
+
 
 const Profile = () => {
-/*
-
-    const [list, setList]=useState('');
-    const [error, setError]=useState();
-    const [response, setResponse]=useState();
-
+    /*
+    const [userToken,setUserToken] = useContext(AuthContext);
+    //const [userToken, setUserToken] = useState('');
     useEffect(() => {
-        fetch("https://api.voxo.co/v2/directory/company")
-            .then(res => res.json())
-            .then((result) => {
-                setList('');
-                setError(error);
-            },
-            (error) => {
-                setList('');
-                setError(error);
-            }
-        )
-    },[]);
-
-    const getContent = () => {
-        if (error) {
-            return <Text>{error}</Text>;
-        }
-
-        console.log(response);
-        return <Text>{response}</Text>
-    };
-    */
+        const headers = {'Authorization': 'Bearer setUserToken'};
+        const response = axios.get('https://api.voxo.co/v2/directory/company', {headers})
+            .then((response) => response.json())
+            .then((response) => {
+                console.log(response.data);
+            })
+       }); 
+*/
 
     return (
-        <Text>Your Profile</Text>
+        <View>
+            <Text>My Profile</Text>
+        </View>
     );
 }
 
 export default Profile;
 
-const styles = StyleSheet.create({
-    container: {
-    flex:1,
-    alignItems:'center',
-    justifyContent:'center'
-},
-});
+
 
 

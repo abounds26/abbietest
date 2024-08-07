@@ -1,6 +1,6 @@
 
-/*
-import React, { useEffect, useState, useRef, useContext} from "react";
+
+/*import React, { useEffect, useState, useRef, useContext} from "react";
 import axios from './api/axios';
 import AuthContext from "./AuthProvider";
 
@@ -72,5 +72,48 @@ const AuthProvider : React.FC = ({children}) => {
             {children}
         </AuthContext.Provider>
     );
-}*/
+}
+    */
+
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
+import { View } from 'react-native';
+
+export default function AuthContext ({}) {
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+    const [isLoading, setIsLoading] = useState(false);
+    const [userToken, setUserToken] = useState('');
+
+    setIsLoading(true);
+
+    const auth = async () => {
+    try{
+     const response = await axios.post('https://api.voxo.co/v2/authentication', 
+         JSON.stringify({email, password}),
+         {
+         headers: { 'Content-Type': 'application/json'},
+         
+     });
+
+     if (response.status===200) {
+         setIsLoading(false);
+         setEmail("");
+         setPassword("");
+         let userToken=response.data;
+         setUserToken(userToken.data.accessToken);
+
+     }
+
+    } catch (error) {
+     setIsLoading(false);
+    }
+    
+};
+
+    return (
+        <AuthContext></AuthContext>
+    );
+}
+
 

@@ -1,21 +1,24 @@
 import { StyleSheet, Text, View, ScrollView } from "react-native";
-import React, { useState } from 'react';
-import CustomInput from "./api/components/CustomInput";
-import CustomButton from "./api/components/CustomButton";
+import React, { useState, useEffect } from 'react';
+import CustomInput from "./components/CustomInput";
+import CustomButton from "./components/CustomButton";
 import { useNavigation } from "@react-navigation/native";
-import axios from 'axios';
-import Profile from "./profile";
+import axios from "axios";
+import api from './api/axios';
+
 
 export default function LoginScreen({}){
+
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [isLoading, setIsLoading] = useState(false);
-
+    const [list , setList] = useState([]);
+    const [token, setToken] = useState('');
 
     const navigation = useNavigation();
     
     const onSignInPressed = async () => {
-
+        
         setIsLoading(true);
 
        try{
@@ -23,27 +26,47 @@ export default function LoginScreen({}){
             JSON.stringify({email, password}),
             {
             headers: { 'Content-Type': 'application/json'},
-            withCredentials:false
+            
+            
         });
 
-        if (response.status===201) {
+        if (response.status===200) {
             setIsLoading(false);
             setEmail("");
             setPassword("");
-            console.log(JSON.stringify(response?.data));
-         //   navigation.navigate('profile');
+            let token=response.data.accessToken;
+            setToken(token);
+            //console.log(token);
         }
+        
 
        } catch (error) {
         console.log(error);
         setIsLoading(false);
        }
+
+       //return token;
+
         };
+
+        //console.log(token);
         
-            
-        //navigation.navigate('profile');
-    
-    
+        useEffect(() => {
+            const fetchContacts = async () => {
+                try{
+                    const res = await axios.get('https://api.voxo.co/v2/directory/company', {headers : {'Authorization':`Bearer ${auth}`}})
+                    setList(res.data);
+                } catch(err) {
+                    if(err.res){
+                    console.log(err.res.data);
+                    console.log(err.res.status);
+                } else {
+                    console.log(`Error:  ${err.message}`);
+                }
+              }
+             }
+            fetchContacts(token);
+        },[])
 
   return (
     <ScrollView>

@@ -13,5 +13,10 @@
     "**/*.tsx",
     ".expo/types/**/*.ts",
     "expo-env.d.ts"
-  ]
+, "scripts/reset-project.js"  ],
+  "extends": "@tsconfig/react-native/tsconfig.json"
 }
+
+
+
+
