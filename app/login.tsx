@@ -4,81 +4,75 @@ import CustomInput from "./components/CustomInput";
 import CustomButton from "./components/CustomButton";
 import { useNavigation } from "@react-navigation/native";
 import axios from "axios";
-import api from './api/axios';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import HomeScreen from "./home";
 
 
-export default function LoginScreen({}){
+export default function LoginScreen({navigation}){
 
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    const [isLoading, setIsLoading] = useState(false);
-    const [list , setList] = useState([]);
-    const [token, setToken] = useState('');
+    const [errMsg, setErrMsg] = useState('');
+    const [key, setKey] = useState('');
 
-    const navigation = useNavigation();
+    navigation = useNavigation();
+
+    useEffect(() => {
+        setErrMsg('');
+    }, [email, password])
+
     
-    const onSignInPressed = async () => {
-        
-        setIsLoading(true);
-
+    const onSignInPressed = async (e) => {
+        e.preventDefault();
        try{
         const response = await axios.post('https://api.voxo.co/v2/authentication', 
             JSON.stringify({email, password}),
             {
-            headers: { 'Content-Type': 'application/json'},
-            
-            
+            headers: { 'Content-Type': 'application/json'}, 
+        })
+            .then(function(response){
+                const token = response?.data?.accessToken;
+                AsyncStorage.setItem('storage_Token', token);
+                
         });
 
-        if (response.status===200) {
-            setIsLoading(false);
-            setEmail("");
-            setPassword("");
-            let token=response.data.accessToken;
-            setToken(token);
-            //console.log(token);
+        setEmail("");
+        setPassword("");
+        
+       navigation.navigate('home');
+
+       } catch (err) {
+        if (!err?.response){
+            setErrMsg('No server response');
+        } else if (err.response?.status === 400){
+            setErrMsg('Missing username or password');
+        } else if (err.response?.status === 401){
+            setErrMsg('Unauthorized');
+        }else{
+            setErrMsg('Login failed');
         }
-        
-
-       } catch (error) {
-        console.log(error);
-        setIsLoading(false);
        }
-
-       //return token;
-
-        };
-
-        //console.log(token);
+       
         
-        useEffect(() => {
-            const fetchContacts = async () => {
-                try{
-                    const res = await axios.get('https://api.voxo.co/v2/directory/company', {headers : {'Authorization':`Bearer ${auth}`}})
-                    setList(res.data);
-                } catch(err) {
-                    if(err.res){
-                    console.log(err.res.data);
-                    console.log(err.res.status);
-                } else {
-                    console.log(`Error:  ${err.message}`);
-                }
-              }
-             }
-            fetchContacts(token);
-        },[])
+    };
 
+        
   return (
     <ScrollView>
     <View style={styles.container}>
         <Text style={styles.title}>Login</Text>
-        <CustomInput  value={email} setValue={setEmail} placeholder="Email" secureTextEntry={false}/>
+        <CustomInput value={email} setValue={setEmail} placeholder="Email" secureTextEntry={false}/>
         <CustomInput value={password} setValue={setPassword} placeholder="Password" secureTextEntry={true}/>
-       <CustomButton text="Sign In" onPress={onSignInPressed}/>
+        <CustomButton text="Sign In" onPress={onSignInPressed}/>
     </View>
     </ScrollView>
   );
+
 }
+
+
+
+
 
 const styles = StyleSheet.create({
   container: {
